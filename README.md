@@ -1,11 +1,11 @@
 # celaria-level-export
  A Blender addon for creating and exporting levels to Celaria.
 
- ![GIF showing a level made in Blender being exported to Celaria.](https://github.com/CosmicMan08/celaria-level-export/blob/main/celaria level export.gif?raw=true)
+ ![GIF showing a level made in Blender being exported to Celaria.](https://github.com/CosmicMan08/celaria-level-export/blob/main/celaria%20level%20export.gif?raw=true)
 
  This addon allows you to export your Blender scene to Celaria using several Celaria specific objects in the add menu.
 
- ![The add menu in Blender with several Celaria objects.](https://github.com/CosmicMan08/celaria-level-export/blob/main/add menu.png?raw=true)
+ ![The add menu in Blender with several Celaria objects.](https://github.com/CosmicMan08/celaria-level-export/blob/main/add%20menu.png?raw=true)
 
  You can export your scene with the Celaria submenu at the sidebar.
 
