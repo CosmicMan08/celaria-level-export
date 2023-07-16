@@ -2,7 +2,7 @@ bl_info = {
         "name": "Celaria Level Editor",
         "description": "Tool for importing, editing, and exporting levels for Celaria.",
         "author": "CosmicMan08",
-        "version": (1, 0),
+        "version": (1, 1),
         "blender": (3, 3, 0),
         "location": "3DView",
         #"warning": "", # used for warning icon and text in add-ons panel
