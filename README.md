@@ -5,7 +5,7 @@
 
  This addon allows you to export your Blender scene to Celaria using several Celaria specific objects in the add menu.
 
- You can move around, scale, and rotate these blocks; **you cannot edit their mesh in edit mode** however. All changes **must** be done in Object Mode for them to display properly in game.
+ You can move around, scale, and rotate these blocks all in object mode. You can also change the box dimensions in Edit Mode, but you cant change the actual shape. Each block's mesh should stay as a rectangular prism.
 
  ![The add menu in Blender with several Celaria objects.](https://github.com/CosmicMan08/celaria-level-export/blob/main/add%20menu.png?raw=true)
 

@@ -42,23 +42,33 @@ class CelExport(Operator):
             #self.report({'INFO'}, ob.name)
             try:
                 match ob["Object Type"]:
-                    case 0:
+                    case 0: #Cube
+                        center = get_center(ob.data.vertices)
+
+                        self.report({'INFO'}, str(rotate_co(center[0],center[2],ob.rotation_euler[2])))
+
                         object_data = [0]
                         object_data.append(ob["Cube Color"])
-                        object_data.append([-ob.location[0],ob.location[1],ob.location[2]])
-                        object_data.append([ob.scale[0]*2,ob.scale[1]*2,ob.scale[2]*2])
+                        object_data.append([ #I HATE MATH !!!!!!!!!!!!!!!!!!!!!!! this used to be SOOOOO simple but nOOOOOO you gotta do all this stuff to account for offset centers akld;sfjghfsrtihuoistfrhuk
+                            -ob.location[0]-(rotate_co(center[0]*ob.scale[0], center[1]*ob.scale[1], ob.rotation_euler[2])[0]), 
+                            ob.location[1]+(rotate_co(center[0]*ob.scale[0], center[1]*ob.scale[1], ob.rotation_euler[2])[1]), 
+                            ob.location[2]+(center[2]*ob.scale[2])
+                            ])
+                        object_data.append([ob.dimensions[0], ob.dimensions[1], ob.dimensions[2]])
+
+                        #self.report({'INFO'}, str(get_center(ob.data.vertices)))
 
                         object_data.append(numpy.rad2deg(ob.rotation_euler[2]) % 360)
                         if ob["Cube Color"] == 5:
                             object_data.append(ob["Checkpoint ID"])
 
                         level_data.append(object_data)
-                    case 1:
+                    case 1: #Orb
                         object_data = [1]
                         object_data.append([-ob.location[0],ob.location[1],ob.location[2]])
 
                         level_data.append(object_data)
-                    case 2:
+                    case 2: #Player
                         object_data = [2]
                         #object_data = [0] #unused byte :3
                         object_data.append([-ob.location[0],ob.location[1],ob.location[2]])
@@ -66,18 +76,30 @@ class CelExport(Operator):
                         object_data.append(numpy.rad2deg(ob.rotation_euler[2]) % 360)
 
                         level_data.append(object_data)
-                    case 3:
+                    case 3: #Wall
+                        center = get_center(ob.data.vertices)
+
                         object_data = [3]
-                        object_data.append([-ob.location[0],ob.location[1],ob.location[2]])
-                        object_data.append([ob.scale[0]*2,ob.scale[1]*2])
+                        object_data.append([ #I HATE MATH !!!!!!!!!!!!!!!!!!!!!!! this used to be SOOOOO simple but nOOOOOO you gotta do all this stuff to account for offset centers akld;sfjghfsrtihuoistfrhuk
+                            -ob.location[0]-(rotate_co(center[0]*ob.scale[0],center[2]*ob.scale[2],ob.rotation_euler[2])[0]), 
+                            ob.location[1]+(rotate_co(center[0]*ob.scale[0],center[2]*ob.scale[2],ob.rotation_euler[2])[1]), 
+                            ob.location[2]+(center[1]*ob.scale[1])
+                            ])
+                        object_data.append([ob.dimensions[0], ob.dimensions[1]])
 
                         object_data.append(numpy.rad2deg(ob.rotation_euler[2]) % 360)
 
                         level_data.append(object_data)
-                    case 4:
+                    case 4: #Floor
+                        center = get_center(ob.data.vertices)
+
                         object_data = [4]
-                        object_data.append([-ob.location[0],ob.location[1],ob.location[2]])
-                        object_data.append([ob.scale[0]*2,ob.scale[1]*2])
+                        object_data.append([ #I HATE MATH !!!!!!!!!!!!!!!!!!!!!!! this used to be SOOOOO simple but nOOOOOO you gotta do all this stuff to account for offset centers akld;sfjghfsrtihuoistfrhuk
+                            -ob.location[0]-(rotate_co(center[0]*ob.scale[0], center[1]*ob.scale[1], ob.rotation_euler[2])[0]), 
+                            ob.location[1]+(rotate_co(center[0]*ob.scale[0], center[1]*ob.scale[1], ob.rotation_euler[2])[1]), 
+                            ob.location[2]+(center[2]*ob.scale[2])
+                            ])
+                        object_data.append([ob.dimensions[0], ob.dimensions[1]])
 
                         object_data.append(numpy.rad2deg(ob.rotation_euler[2]) % 360)
 
@@ -207,6 +229,23 @@ class IOPanel(Panel):
         col = layout.column(align=True)
         #col.operator(CelImport.bl_idname, text="Import", icon="FILEBROWSER")
         col.operator(CelExport.bl_idname, text="Export", icon="FILEBROWSER")
+
+def get_center(vertices):
+    average_position = [0,0,0]
+
+    for i in vertices:
+        average_position[0] += i.co[0]
+        average_position[1] += i.co[1]
+        average_position[2] += i.co[2]
+
+    average_position[0] /= len(vertices)
+    average_position[1] /= len(vertices)
+    average_position[2] /= len(vertices)
+
+    return(average_position)
+
+def rotate_co(x,y,dir):
+    return [x*numpy.cos(dir) - y*numpy.sin(dir), x*numpy.sin(dir) + y*numpy.cos(dir)]
 
 def double2bin(fl):
     return (f"{swap64(ctypes.c_uint64.from_buffer(ctypes.c_double(fl)).value):0{16}x}")

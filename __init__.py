@@ -16,18 +16,18 @@ import bpy
 
 def register():
     from . import properties
-    from . import ui
+    from . import sidebar
     from . import objects
     properties.register()
-    ui.register()
+    sidebar.register()
     objects.register()
 
 def unregister():
     from . import properties
-    from . import ui
+    from . import sidebar
     from . import objects
     properties.unregister()
-    ui.unregister()
+    sidebar.unregister()
     objects.unregister()
 
 if __name__ == '__main__':
